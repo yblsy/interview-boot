@@ -4,21 +4,17 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>manage</title>
     <!-- Bootstrap -->
     <link href="/static/css/bootstarp/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstarp/bootstrap.min.css}"/>
     <script type="text/javascript" src="/static/js/jquery/jquery-3.3.1.js" th:src="@{/js/jquery/jquery-3.3.1.js}"></script>
     <script src="/static/js/bootstarp/bootstrap.min.js" th:src="@{/js/bootstarp/bootstrap.min.js}"></script>
+    <script src="/static/js/bootstarp/bootstrap3-typeahead.min.js" th:src="@{/js/bootstarp/bootstrap3-typeahead.min.js}"></script>
 </head>
 <body>
    <div>
-       <!--最高等级下-->
-       <div class="div-level-0">
-           <label>选择父节点:</label>
-           <select class="level-0">
-                <option value="">无</option>
-           </select>
-       </div>
+       <input type="text" data-provide="typeahead" autocomplete="off" id="classes"/>
     </div>
     <div>
         <label>节点名称：</label>
@@ -34,10 +30,21 @@
 </body>
 <script type="text/javascript">
     $(function(){
-        //查询顶级节点
         $.post("/class/queryClass",{parentid:""},function (data) {
-            console.log(data);
+
+            var dataSource = ['1军工', '1高校', '煤化工', '新能源', '节能环保', 'AB股', 'AH股', 'HS300'];
+            console.log(dataSource);
+            //绑定数据
+            $('#classes').typeahead({
+                source: dataSource,
+            })
         },"json");
+
+
+        // var dataSource = ['军工', '高校', '煤化工', '新能源', '节能环保', 'AB股', 'AH股', 'HS300'];
+        // $('#classes').typeahead({
+        //     source: dataSource,
+        // })
     });
 
     function insertNode(){
