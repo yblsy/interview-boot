@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>manage</title>
+    <!-- Bootstrap -->
+    <link href="/static/css/bootstarp/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstarp/bootstrap.min.css}"/>
+    <script type="text/javascript" src="/static/js/jquery/jquery-3.3.1.js" th:src="@{/js/jquery/jquery-3.3.1.js}"></script>
+    <script src="/static/js/bootstarp/bootstrap.min.js" th:src="@{/js/bootstarp/bootstrap.min.js}"></script>
+</head>
+<body>
+   <div>
+       <!--最高等级下-->
+       <div class="div-level-0">
+           <label>选择父节点:</label>
+           <select class="level-0">
+                <option value="">无</option>
+           </select>
+       </div>
+    </div>
+    <div>
+        <label>节点名称：</label>
+        <input type="text" id="node" value=""/><br/>
+        <label>父节点id：</label>
+        <input type="text" id="parent_node" value=""/><br/>
+        <label>url：</label>
+        <input type="text" id="url" value=""/><br/>
+        <label>memo：</label>
+        <input type="text" id="memo" value=""/><br/>
+        <input type="button" value="增加" onclick="insertNode()"/>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        //查询顶级节点
+        $.post("/class/queryClass",{parentid:""},function (data) {
+            console.log(data);
+        },"json");
+    });
+
+    function insertNode(){
+        $.ajax({
+            url:"/class/insertClass",
+            type:'post',
+            data:{
+                name:$('#node').val(),
+                parentId:$('#parent_node').val(),
+                url:$('#url').val(),
+                memo:$('#memo').val()
+            },
+            dataType:'json',
+            success:function(data){
+
+            }
+        })
+    }
+</script>
+</html>
