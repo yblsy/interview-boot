@@ -107,6 +107,11 @@
 			<artifactId>unify-tools</artifactId>
 			<version>${unify-tools.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>personal.liuchen.common</groupId>
+			<artifactId>exception-tool</artifactId>
+			<version>${unify-tools.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

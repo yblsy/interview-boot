@@ -1,9 +1,7 @@
 package com.lw.share.service.impl;
 
 import com.google.common.base.Strings;
-import com.lw.share.commons.enums.ErrorEnum;
 import com.lw.share.commons.enums.SeqConfEnum;
-import com.lw.share.commons.exceptions.InterviewException;
 import com.lw.share.entity.BaseClass;
 import com.lw.share.inner.InnerBaseClassComponent;
 import com.lw.share.service.BaseClassService;
@@ -11,6 +9,8 @@ import com.lw.share.service.SeqConfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import personal.exception.enums.InterviewErrorEnum;
+import personal.exception.exception.InterviewException;
 
 import java.util.List;
 
@@ -36,13 +36,13 @@ public class BaseClassServiceImpl implements BaseClassService {
         if(!Strings.isNullOrEmpty(baseClass.getParentId())){
             parentClass = innerBaseClassComponent.selectOne(baseClass.getParentId());
             if(parentClass == null){
-                throw new InterviewException(ErrorEnum.INTER_BC_ER_000001.getCode(), ErrorEnum.INTER_BC_ER_000001.getValue());
+                throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000001.getCode(), InterviewErrorEnum.INTER_BC_ER_000001.getValue());
             }
             //该父节点多增加一个子节点
             parentClass.setChildNum(parentClass.getChildNum() + 1);
             result = innerBaseClassComponent.updateBaseClass(parentClass);
             if(result != 1){
-                throw new InterviewException(ErrorEnum.INTER_BC_ER_000002.getCode(),ErrorEnum.INTER_BC_ER_000002.getValue());
+                throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000002.getCode(),InterviewErrorEnum.INTER_BC_ER_000002.getValue());
             }
         }else{
             parentClass = new BaseClass();
@@ -61,7 +61,7 @@ public class BaseClassServiceImpl implements BaseClassService {
 
         result = innerBaseClassComponent.insertBaseClass(baseClass);
         if(result != 1){
-            throw new InterviewException(ErrorEnum.INTER_BC_ER_000003.getCode(),ErrorEnum.INTER_BC_ER_000003.getValue());
+            throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000003.getCode(),InterviewErrorEnum.INTER_BC_ER_000003.getValue());
         }
         return result;
     }

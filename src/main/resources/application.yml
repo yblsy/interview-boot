@@ -26,16 +26,12 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     useGlobalDataSourceStat: true
     maxPoolPreparedStatementPerConnectionSize: 20
-
-
-
   thymeleaf:
     mode: HTML5
     encoding: UTF-8
     content-type: text/html
     #发布正式环境时改为true
     cache: false
-
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
