@@ -9,12 +9,17 @@
     <!-- Bootstrap -->
     <link href="/static/css/bootstarp/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstarp/bootstrap.min.css}"/>
     <script type="text/javascript" src="/static/js/jquery/jquery-3.3.1.js" th:src="@{/js/jquery/jquery-3.3.1.js}"></script>
-    <script src="/static/js/bootstarp/bootstrap.min.js" th:src="@{/js/bootstarp/bootstrap.min.js}"></script>
     <script src="/static/js/bootstarp/bootstrap3-typeahead.min.js" th:src="@{/js/bootstarp/bootstrap3-typeahead.min.js}"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
+    <script src="/static/js/applications/notice.plugins.js" th:src="@{/js/applications/notice.plugins.js}"></script>
+    <script src="/static/js/applications/bootstrap.notice.plugins.js" th:src="@{/js/applications/bootstrap.notice.plugins.js}"></script>
 </head>
 <body>
+    <div class="info-alert">
+    </div>
+
    <div>
-       <input type="text" data-provide="typeahead" autocomplete="off" id="classes"/>
+       <input type="text" data-provide="typeahead" autocomplete="off" id="classes-level-1"/>
     </div>
     <div>
         <label>节点名称：</label>
@@ -31,32 +36,36 @@
 <script type="text/javascript">
     var objMap = {};
     $(function(){
-        $.post("/class/queryClass",{parentid:""},function (data) {
 
-            // var dataSource = ['1军工', '1高校', '煤化工', '新能源', '节能环保', 'AB股', 'AH股', 'HS300'];
-            var dataSource = [];
-            $.each(data.data,function(index,ele){
-                objMap[ele.name] = ele;
-                dataSource.push(ele.name);
-            });
-            console.log(dataSource);
-            //绑定数据
-            $('#classes').typeahead({
-                source: dataSource,
-                afterSelect: function(item){
-                    console.log(objMap[item]);
-                    $('#parent_node').val(objMap[item].id);
-                },
-                showHintOnFocus:true,
-                minLength: 0
-            })
-        },"json");
+        $('.alert-warning').hide();
 
+        var dataSource = ["数据库", "工作", "界面、UI、前端", "工具"];
 
-        // var dataSource = ['军工', '高校', '煤化工', '新能源', '节能环保', 'AB股', 'AH股', 'HS300'];
-        // $('#classes').typeahead({
-        //     source: dataSource,
-        // })
+        //绑定数据
+        $('#classes-level-1').typeahead({
+            source: function(query,process){
+                var dataSource = $.post("/class/queryClass",{parentid:""},function (data) {
+                    var dataSource = [];
+                    $.each(data.data,function(index,ele){
+                        objMap[ele.name] = ele;
+                        dataSource.push(ele.name);
+                    });
+                    console.log(dataSource);
+                    process(dataSource);
+                },"json");
+            },
+            afterSelect: function(item){
+                console.log(objMap[item]);
+                $('#parent_node').val(objMap[item].id);
+            },
+            showHintOnFocus:true,
+            minLength: 0,
+            delay: 500,
+            fitToElement: true,
+            items:'all',
+            autoSelect: true
+        })
+
     });
 
     function insertNode(){
@@ -71,7 +80,14 @@
             },
             dataType:'json',
             success:function(data){
-
+                console.log(data);
+                if(data.code == '00'){
+                    $('.info-alert').notice_alert({msg:'新增成功',notice_class:'alert-info',closed_event:function(){
+                        location.reload();
+                    }});
+                }else{
+                    $('.info-alert').notice_alert({msg:data.message});
+                }
             }
         })
     }

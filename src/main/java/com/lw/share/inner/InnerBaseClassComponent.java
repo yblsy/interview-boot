@@ -35,6 +35,12 @@ public class InnerBaseClassComponent {
         return baseClassMapper.updateAllColumnById(baseClass);
     }
 
+    public List<BaseClass> selectAllBaseClasses(){
+        EntityWrapper<BaseClass> baseClassEntityWrapper = new EntityWrapper<>();
+        baseClassEntityWrapper.eq("is_delete",0);
+        return baseClassMapper.selectList(baseClassEntityWrapper);
+    }
+
     public List<BaseClass> selectBaseClassesByParentId(String parentId){
         EntityWrapper<BaseClass> baseClassEntityWrapper = new EntityWrapper<>();
         if(parentId == null){
