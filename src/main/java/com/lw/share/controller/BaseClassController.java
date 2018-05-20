@@ -1,6 +1,7 @@
 package com.lw.share.controller;
 
 import com.lw.share.commons.model.InterviewResult;
+import com.lw.share.commons.model.TreeModel;
 import com.lw.share.entity.BaseClass;
 import com.lw.share.service.BaseClassService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +39,8 @@ public class BaseClassController{
 
     @RequestMapping(value = "queryClass",method = {RequestMethod.POST,RequestMethod.GET},produces = "application/json;charset=utf-8")
     @ResponseBody
-    public InterviewResult queryClass(String parentId){
-        List<BaseClass> results = baseClassService.queryBaseClassesByParentId(parentId);
+    public InterviewResult queryClass(){
+        List<TreeModel<BaseClass>> results = baseClassService.queryBaseClasses4TreeByParentId(null);
         return InterviewResult.success(results,"查询成功");
     }
 

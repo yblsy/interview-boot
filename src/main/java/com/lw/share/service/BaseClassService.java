@@ -1,6 +1,7 @@
 package com.lw.share.service;
 
 
+import com.lw.share.commons.model.TreeModel;
 import com.lw.share.entity.BaseClass;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface BaseClassService {
 
     List<BaseClass> queryBaseClassesByParentId(String parentId);
 
+    List<TreeModel<BaseClass>> queryBaseClasses4TreeByParentId(String parentId);
 }

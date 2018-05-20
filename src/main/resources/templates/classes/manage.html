@@ -39,33 +39,11 @@
 
         $('.alert-warning').hide();
 
-        var dataSource = ["数据库", "工作", "界面、UI、前端", "工具"];
 
-        //绑定数据
-        $('#classes-level-1').typeahead({
-            source: function(query,process){
-                var dataSource = $.post("/class/queryClass",{parentid:""},function (data) {
-                    var dataSource = [];
-                    $.each(data.data,function(index,ele){
-                        objMap[ele.name] = ele;
-                        dataSource.push(ele.name);
-                    });
-                    console.log(dataSource);
-                    process(dataSource);
-                },"json");
-            },
-            afterSelect: function(item){
-                console.log(objMap[item]);
-                $('#parent_node').val(objMap[item].id);
-            },
-            showHintOnFocus:true,
-            minLength: 0,
-            delay: 500,
-            fitToElement: true,
-            items:'all',
-            autoSelect: true
-        })
-
+        $.post("/class/queryClass",function (data) {
+            alert('1');
+            console.log(data);
+        },"json");
     });
 
     function insertNode(){

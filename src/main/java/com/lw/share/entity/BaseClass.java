@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.lw.share.commons.annotation.TreeLabel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @TableName("base_class")
+@TreeLabel(text = "name")
 public class BaseClass extends Model<BaseClass> {
 
     private static final long serialVersionUID = -1064080574401025929L;
@@ -43,15 +45,16 @@ public class BaseClass extends Model<BaseClass> {
     
     private String memo;
 
-    @TableField(exist = false)
-    private List<BaseClass> childrens;
-
+    @TableField("create_user")
     protected String createUser;
 
+    @TableField("create_time")
     protected Date createTime;
 
+    @TableField("update_user")
     protected String updateUser;
 
+    @TableField("update_time")
     protected Date updateTime;
 
     @TableField("is_delete")

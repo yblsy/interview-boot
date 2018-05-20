@@ -1,7 +1,9 @@
 package com.lw.share.service.impl;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.lw.share.commons.enums.SeqConfEnum;
+import com.lw.share.commons.model.TreeModel;
 import com.lw.share.entity.BaseClass;
 import com.lw.share.inner.InnerBaseClassComponent;
 import com.lw.share.service.BaseClassService;
@@ -69,5 +71,23 @@ public class BaseClassServiceImpl implements BaseClassService {
     @Override
     public List<BaseClass> queryBaseClassesByParentId(String parentId) {
         return innerBaseClassComponent.selectBaseClassesByParentId(Strings.emptyToNull(parentId));
+    }
+
+    @Override
+    public List<TreeModel<BaseClass>> queryBaseClasses4TreeByParentId(String parentId) {
+        List<TreeModel<BaseClass>> results = Lists.newArrayList();
+        //所有顶级节点
+        List<BaseClass> baseClasses = innerBaseClassComponent.selectBaseClassesByParentId(parentId);
+        for (BaseClass baseClass : baseClasses){
+            //当前节点
+            TreeModel<BaseClass> treeModel = TreeModel.getChildByT(baseClass);
+            //查找子节点
+            List<TreeModel<BaseClass>> children = this.queryBaseClasses4TreeByParentId(baseClass.getId());
+            if(children != null && children.size() > 0){
+                treeModel.setChildren(children);
+            }
+            results.add(treeModel);
+        }
+        return results;
     }
 }
