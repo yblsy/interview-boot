@@ -36,29 +36,41 @@ public class BaseClass extends Model<BaseClass> {
     @TableField("parent_name")
     private String parentName;
 
+    @TableField("user_id")
+    private String userId;
+
+    @TableField("user_name")
+    private String userName;
+
     private String level;
 
     private String url;
 
     @TableField("child_num")
     private Integer childNum;
+
+    @TableField("icon")
+    private String icon;
+
+    @TableField("selected_icon")
+    private String selectedIcon;
     
     private String memo;
 
     @TableField("create_user")
-    protected String createUser;
+    private String createUser;
 
     @TableField("create_time")
-    protected Date createTime;
+    private Date createTime;
 
     @TableField("update_user")
-    protected String updateUser;
+    private String updateUser;
 
     @TableField("update_time")
-    protected Date updateTime;
+    private Date updateTime;
 
     @TableField("is_delete")
-    protected Integer isDelete = 0;
+    private Integer isDelete;
 
     @Override
     protected Serializable pkVal() {
