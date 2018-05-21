@@ -1,5 +1,6 @@
 package com.lw.share.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.lw.share.commons.enums.SeqConfEnum;
@@ -11,6 +12,7 @@ import com.lw.share.service.SeqConfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import personal.enums.IsDeletedEnum;
 import personal.exception.enums.InterviewErrorEnum;
 import personal.exception.exception.InterviewException;
 
@@ -33,6 +35,11 @@ public class BaseClassServiceImpl implements BaseClassService {
     @Override
     @Transactional(readOnly = false,rollbackFor = Exception.class)
     public Integer insertBaseClass(BaseClass baseClass) {
+
+        if(Strings.isNullOrEmpty(baseClass.getName())){
+            throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000004.getCode(), InterviewErrorEnum.INTER_BC_ER_000004.getValue());
+        }
+
         int result = 0;
         BaseClass parentClass = null;
         if(!Strings.isNullOrEmpty(baseClass.getParentId())){
@@ -84,10 +91,23 @@ public class BaseClassServiceImpl implements BaseClassService {
             //查找子节点
             List<TreeModel<BaseClass>> children = this.queryBaseClasses4TreeByParentId(baseClass.getId());
             if(children != null && children.size() > 0){
-                treeModel.setChildren(children);
+                treeModel.setNodes(children);
             }
             results.add(treeModel);
         }
         return results;
+    }
+
+    @Override
+    @Transactional(readOnly = false,rollbackFor = Exception.class)
+    public Integer deleteBaseClassById(String id) {
+        BaseClass baseClass = new BaseClass();
+        baseClass.setId(id);
+        baseClass.setIsDelete(IsDeletedEnum.DELETED.getCode());
+        int result = innerBaseClassComponent.updateBaseClass(baseClass);
+        if(result != 1){
+            throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000005.getCode(),InterviewErrorEnum.INTER_BC_ER_000005.getValue());
+        }
+        return result;
     }
 }

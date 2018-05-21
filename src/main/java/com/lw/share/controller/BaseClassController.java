@@ -50,4 +50,11 @@ public class BaseClassController{
         Integer result = baseClassService.insertBaseClass(baseClass);
         return InterviewResult.success(result,"新增成功");
     }
+
+    @RequestMapping(value = "deleteClass",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public InterviewResult deleteClass(String id){
+        Integer result = baseClassService.deleteBaseClassById(id);
+        return InterviewResult.success(result,"删除成功");
+    }
 }

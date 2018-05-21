@@ -9,42 +9,135 @@
     <!-- Bootstrap -->
     <link href="/static/css/bootstarp/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstarp/bootstrap.min.css}"/>
     <script type="text/javascript" src="/static/js/jquery/jquery-3.3.1.js" th:src="@{/js/jquery/jquery-3.3.1.js}"></script>
-    <script src="/static/js/bootstarp/bootstrap3-typeahead.min.js" th:src="@{/js/bootstarp/bootstrap3-typeahead.min.js}"></script>
-    <script src="https://cdn.bootcss.com/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
+    <script type="text/javascript" src="/static/js/bootstarp/bootstrap.min.js" th:src="@{/js/bootstarp/bootstrap.min.js}"></script>
+
     <script src="/static/js/applications/notice.plugins.js" th:src="@{/js/applications/notice.plugins.js}"></script>
     <script src="/static/js/applications/bootstrap.notice.plugins.js" th:src="@{/js/applications/bootstrap.notice.plugins.js}"></script>
+    <!--树-->
+    <script src="/static/js/bootstarp/bootstrap-treeview.js" th:src="@{/js/bootstarp/bootstrap-treeview.js}"></script>
+    <link href="/static/css/bootstarp/bootstrap-treeview.css" rel="stylesheet" th:href="@{/css/bootstarp/bootstrap-treeview.css}"/>
+
+    <!--矢量图库-->
+    <link href="/static/css/icon/iconfont.css" rel="stylesheet" th:href="@{/css/icon/iconfont.css}"/>
 </head>
 <body>
-    <div class="info-alert">
-    </div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-lg-6">
+            <div class="panel panel-info toggle">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="glyphicon glyphicon-tree-deciduous"></i>&nbsp;&nbsp;菜单树
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <div id="tree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
 
-   <div>
-       <input type="text" data-provide="typeahead" autocomplete="off" id="classes-level-1"/>
+            <div class="panel panel-info toggle">
+                <div class="info-alert"></div>
+
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <i class="iconfont icon-fuwujiedian"></i>&nbsp;&nbsp;节点信息操作
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal group-border hover-stripped">
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" >节点名称</label>
+                            <div class="controls col-lg-10 ">
+                                <input id="node" type="text" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" >父节点id</label>
+                            <div class="controls col-lg-10 ">
+                                <input id="parent_node" type="text" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" >url</label>
+                            <div class="controls col-lg-10 ">
+                                <input id="url" type="text" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-lg-2" >memo</label>
+                            <div class="controls col-lg-10 ">
+                                <input id="memo" type="text" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-6">
+                                <input type="button" value="增加" class="btn btn-default btn-block" onclick="insertNode()"/>
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="button" value="查看资源" class="btn btn-default btn-block" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label>节点名称：</label>
-        <input type="text" id="node" value=""/><br/>
-        <label>父节点id：</label>
-        <input type="text" id="parent_node" value=""/><br/>
-        <label>url：</label>
-        <input type="text" id="url" value=""/><br/>
-        <label>memo：</label>
-        <input type="text" id="memo" value=""/><br/>
-        <input type="button" value="增加" onclick="insertNode()"/>
-    </div>
+</div>
+
+
 </body>
 <script type="text/javascript">
-    var objMap = {};
+
+    var treeEle = {
+        id : null,
+        text : null,
+        nodes : null,
+        tags : null
+    }
+
     $(function(){
-
-        $('.alert-warning').hide();
-
-
-        $.post("/class/queryClass",function (data) {
-            alert('1');
-            console.log(data);
-        },"json");
+        $.ajax({
+            url: '/class/queryClass',
+            type:'post',
+            dataType: 'json',
+            success : function(data){
+                $('#tree').treeview({
+                    data:menuData(data.data),
+                    collapseIcon:'glyphicon glyphicon-folder-open',
+                    expandIcon:'glyphicon glyphicon-folder-close',
+                    levels:0,
+                    showTags:true
+                })
+            }
+        })
     });
+
+    function menuData(data){
+        var treeEles = new Array();
+        $(data).each(function(index,value){
+            var treeEle = new Object();
+            treeEle.id = value.id;
+            treeEle.text = value.text;
+            /*<![CDATA[*/
+            if(value.nodes != null && value.nodes.length > 0){
+                /*]]>*/
+                treeEle.nodes = menuData(value.nodes);
+            }
+            treeEle.tags = /*<![CDATA[*/['<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="deleteEle(\'' + value.id + '\')">删除</a>'] /*]]>*/;
+            treeEles.push(treeEle);
+        });
+        return treeEles;
+    }
+
+    function deleteEle(id){
+        console.log(id);
+    }
 
     function insertNode(){
         $.ajax({
@@ -58,7 +151,6 @@
             },
             dataType:'json',
             success:function(data){
-                console.log(data);
                 if(data.code == '00'){
                     $('.info-alert').notice_alert({msg:'新增成功',notice_class:'alert-info',closed_event:function(){
                         location.reload();
@@ -68,6 +160,10 @@
                 }
             }
         })
+    }
+
+    function method(){
+        console.log($('#tree').treeview('getSelected'));
     }
 </script>
 </html>

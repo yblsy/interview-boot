@@ -48,6 +48,7 @@ public class InnerBaseClassComponent {
         }else{
             baseClassEntityWrapper.eq("parent_id",parentId);
         }
+        baseClassEntityWrapper.eq("is_delete","0");
         return baseClassMapper.selectList(baseClassEntityWrapper);
     }
 }

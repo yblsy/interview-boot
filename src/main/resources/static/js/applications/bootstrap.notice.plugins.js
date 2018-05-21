@@ -15,10 +15,10 @@
 
         var settings = $.extend({},defaults,opts);
 
-        var _box = '<div class=\'alert '+settings.notice_class+'\'>';
-        _box += '<a href=\'#\' class=\'close\' data-dismiss=\'alert\'>&times;</a>';
-        _box += '<strong>' + settings.head + '：</strong><span>' + settings.msg + '</span>'
-        _box += '</div>'
+        var _box = '<div class=\'alert '+settings.notice_class+' alert-dismissable\'>';
+        _box += '<button type=\'button\' class=\'close\' data-dismiss=\'alert\' aria-label=\'Close\'>&times;</button>';
+        _box += '<strong>' + settings.head + '：</strong><span>' + settings.msg + '</span>';
+        _box += '</div>';
         $(this).append(_box);
 
         if(settings.close_event != null){

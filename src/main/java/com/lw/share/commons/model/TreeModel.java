@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import sun.reflect.generics.tree.Tree;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
@@ -17,11 +18,9 @@ import java.util.Objects;
  **/
 @Getter
 @Setter
-public class TreeModel<T> {
+public class TreeModel<T> implements Serializable{
 
-    public TreeModel(){
-
-    }
+    private static final long serialVersionUID = 8371249277450370840L;
 
     private String id;
 
@@ -31,7 +30,7 @@ public class TreeModel<T> {
 
     private T t;
 
-    private List<TreeModel<T>> children;
+    private List<TreeModel<T>> nodes;
 
     public static <T> TreeModel<T> getChildByT(T target){
         Class clazz = target.getClass();
