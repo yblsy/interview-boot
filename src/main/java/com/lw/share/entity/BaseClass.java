@@ -45,6 +45,11 @@ public class BaseClass extends Model<BaseClass> {
     
     private String memo;
 
+    private String icon;
+
+    @TableField("selected_icon")
+    private String selectedIcon;
+
     @TableField("create_user")
     protected String createUser;
 

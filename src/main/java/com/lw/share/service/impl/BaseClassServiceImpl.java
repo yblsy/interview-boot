@@ -3,20 +3,28 @@ package com.lw.share.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.lw.share.commons.enums.SeqConfEnum;
 import com.lw.share.commons.model.TreeModel;
 import com.lw.share.entity.BaseClass;
 import com.lw.share.inner.InnerBaseClassComponent;
 import com.lw.share.service.BaseClassService;
 import com.lw.share.service.SeqConfService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import personal.enums.IsDeletedEnum;
+import personal.enums.RedisKeyEnum;
 import personal.exception.enums.InterviewErrorEnum;
 import personal.exception.exception.InterviewException;
+import personal.tools.RedisUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 刘晨
@@ -31,6 +39,12 @@ public class BaseClassServiceImpl implements BaseClassService {
 
     @Autowired
     private SeqConfService seqConfService;
+
+    @Autowired(required = false)
+    private RedisUtils redisUtils;
+
+    @Autowired(required = false)
+    private Gson gson;
 
     @Override
     @Transactional(readOnly = false,rollbackFor = Exception.class)
@@ -67,6 +81,7 @@ public class BaseClassServiceImpl implements BaseClassService {
         baseClass.setParentId(parentClass.getId());
         baseClass.setUrl(Strings.emptyToNull(baseClass.getUrl()));
         baseClass.setMemo(Strings.emptyToNull(baseClass.getMemo()));
+        baseClass.setChildNum(0);
 
         result = innerBaseClassComponent.insertBaseClass(baseClass);
         if(result != 1){
@@ -109,5 +124,10 @@ public class BaseClassServiceImpl implements BaseClassService {
             throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000005.getCode(),InterviewErrorEnum.INTER_BC_ER_000005.getValue());
         }
         return result;
+    }
+
+    @Override
+    public BaseClass queryBaseClassById(String id) {
+        return innerBaseClassComponent.selectOne(id);
     }
 }
