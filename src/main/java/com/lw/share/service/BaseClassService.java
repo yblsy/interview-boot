@@ -20,4 +20,6 @@ public interface BaseClassService {
     List<TreeModel<BaseClass>> queryBaseClasses4TreeByParentId(String parentId);
 
     Integer deleteBaseClassById(String id);
+
+    BaseClass queryBaseClassById(String id);
 }

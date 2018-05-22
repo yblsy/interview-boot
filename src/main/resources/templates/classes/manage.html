@@ -76,6 +76,17 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="control-label col-lg-2" >icon</label>
+                            <div class="controls col-lg-4 ">
+                                <input id="icon" type="text" class="form-control"/>
+                            </div>
+                            <label class="control-label col-lg-2" >selectedIcon</label>
+                            <div class="controls col-lg-4 ">
+                                <input id="selectedIcon" type="text" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-lg-6">
                                 <input type="button" value="增加" class="btn btn-default btn-block" onclick="insertNode()"/>
                             </div>
@@ -99,7 +110,7 @@
         text : null,
         nodes : null,
         tags : null
-    }
+    };
 
     $(function(){
         $.ajax({
@@ -113,6 +124,12 @@
                     expandIcon:'glyphicon glyphicon-folder-close',
                     levels:0,
                     showTags:true
+                })
+            },
+            complete : function(){
+                $('.node-tree').on('click',function(){
+                    console.log(1);
+                    console.log($('#tree').treeview('getSelected'));
                 })
             }
         })
@@ -129,7 +146,7 @@
                 /*]]>*/
                 treeEle.nodes = menuData(value.nodes);
             }
-            treeEle.tags = /*<![CDATA[*/['<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="deleteEle(\'' + value.id + '\')">删除</a>'] /*]]>*/;
+            treeEle.tags = /*<![CDATA[*/['<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="deleteEle(\'' + value.id + '\')">删除</a>','<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="showEle(\'this\')">查看</a>'] /*]]>*/;
             treeEles.push(treeEle);
         });
         return treeEles;
@@ -137,6 +154,12 @@
 
     function deleteEle(id){
         console.log(id);
+    }
+
+    function showEle(id){
+        $.post('/class/queryBaseClass',{id:id},function(data){
+            console.log(data);
+        })
     }
 
     function insertNode(){
@@ -147,7 +170,9 @@
                 name:$('#node').val(),
                 parentId:$('#parent_node').val(),
                 url:$('#url').val(),
-                memo:$('#memo').val()
+                memo:$('#memo').val(),
+                icon:$('#icon').val(),
+                selectedIcon:$('#selectedIcon').val()
             },
             dataType:'json',
             success:function(data){
@@ -162,8 +187,5 @@
         })
     }
 
-    function method(){
-        console.log($('#tree').treeview('getSelected'));
-    }
 </script>
 </html>

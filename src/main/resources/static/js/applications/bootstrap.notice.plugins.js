@@ -22,11 +22,11 @@
         $(this).append(_box);
 
         if(settings.close_event != null){
-            $(this).find('div[class=\'alert '+settings.notice_class+'\']').bind('close.bs.alert',settings.close_event);
+            $(this).find('div[class=\'alert '+settings.notice_class+' alert-dismissable\']').bind('close.bs.alert',settings.close_event);
         }
 
         if(settings.closed_event != null){
-            $(this).find('div[class=\'alert '+settings.notice_class+'\']').bind('closed.bs.alert',settings.closed_event);
+            $(this).find('div[class=\'alert '+settings.notice_class+' alert-dismissable\']').bind('closed.bs.alert',settings.closed_event);
         }
     }
 })(jQuery);
