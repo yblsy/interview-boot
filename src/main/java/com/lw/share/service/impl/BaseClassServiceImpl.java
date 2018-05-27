@@ -1,6 +1,5 @@
 package com.lw.share.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
@@ -14,17 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationAdapter;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import personal.enums.IsDeletedEnum;
-import personal.enums.RedisKeyEnum;
 import personal.exception.enums.InterviewErrorEnum;
 import personal.exception.exception.InterviewException;
 import personal.tools.RedisUtils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 刘晨
@@ -32,6 +26,7 @@ import java.util.Map;
  * To change this template use File | Settings | Editor | File and Code Templates.
  **/
 @Service
+@Slf4j
 public class BaseClassServiceImpl implements BaseClassService {
 
     @Autowired

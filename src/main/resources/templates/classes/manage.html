@@ -17,8 +17,14 @@
     <script src="/static/js/bootstarp/bootstrap-treeview.js" th:src="@{/js/bootstarp/bootstrap-treeview.js}"></script>
     <link href="/static/css/bootstarp/bootstrap-treeview.css" rel="stylesheet" th:href="@{/css/bootstarp/bootstrap-treeview.css}"/>
 
+    <!--数字组件-->
+    <script type="text/javascript" src="/static/js/bootstarp/jquery.spinner.js" th:src="@{/js/bootstarp/jquery.spinner.js}"></script>
+    <link href="/static/css/bootstarp/bootstrap-spinner.css" rel="stylesheet" th:href="@{/css/bootstarp/bootstrap-spinner.css}"/>
+
     <!--矢量图库-->
     <link href="/static/css/icon/iconfont.css" rel="stylesheet" th:href="@{/css/icon/iconfont.css}"/>
+
+    <script type="text/javascript" src="/static/js/layer/layer.js" th:src="@{/js/layer/layer.js}"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -87,11 +93,52 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="control-label col-lg-2" >排序</label>
+                            <div class="controls col-lg-4 ">
+                                <div class="input-group input-group-option quantity-wrapper spinner" data-trigger="spinner">
+                                    <span  class="input-group-addon input-group-addon-remove quantity-remove btn spin-down" data-spin="down">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </span>
+                                    <input type="text" id="sort" value="" class="form-control quantity-count" placeholder="输入数字进行排序" data-min="0"/>
+                                    <span class="input-group-addon input-group-addon-remove quantity-add btn spin-up" data-spin="up">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <label class="control-label col-lg-2" >选择置顶</label>
+                            <div class="controls col-lg-4">
+                                <div class="input-group input-group-option quantity-wrapper spinner" data-trigger="spinner">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-text">不置顶</span>&nbsp;<span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a th:value="0" href="#">不置顶</a></li>
+                                            <li><a th:value="1" href="#">置顶</a></li>
+                                        </ul>
+                                    </div>
+                                    <span  class="input-group-addon input-group-addon-remove quantity-remove btn spin-down" data-spin="down">
+                                        <span class="glyphicon glyphicon-minus"></span>
+                                    </span>
+                                    <input type="text" id="topOrder" value="" class="form-control quantity-count" placeholder="输入数字进行排序" data-min="0"/>
+                                    <span class="input-group-addon input-group-addon-remove quantity-add btn spin-up" data-spin="up">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-lg-6">
-                                <input type="button" value="增加" class="btn btn-default btn-block" onclick="insertNode()"/>
+                                <input type="button" value="增加" class="btn btn-block btn-success" onclick="insertNode()"/>
                             </div>
                             <div class="col-lg-6">
-                                <input type="button" value="查看资源" class="btn btn-default btn-block" />
+                                <input type="button" value="更新" class="btn btn-block btn-brown" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <input type="button" value="查看资源" class="btn btn-block btn-info" />
                             </div>
                         </div>
                     </form>
@@ -132,6 +179,18 @@
                     console.log($('#tree').treeview('getSelected'));
                 })
             }
+        });
+
+        $('#topOrder').attr("disabled",true);
+
+        $('.dropdown-menu a').on('click',function(){
+            $(this).parents('div').find('button>span[class=\'dropdown-text\']').html($(this).html());
+
+            if($(this).html() == '不置顶'){
+                $('#topOrder').attr("disabled",true);
+            }else{
+                $('#topOrder').attr("disabled",false);
+            }
         })
     });
 
@@ -146,14 +205,16 @@
                 /*]]>*/
                 treeEle.nodes = menuData(value.nodes);
             }
-            treeEle.tags = /*<![CDATA[*/['<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="deleteEle(\'' + value.id + '\')">删除</a>','<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="showEle(\'this\')">查看</a>'] /*]]>*/;
+            treeEle.tags = /*<![CDATA[*/['<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="deleteEle(\'' + value.id + '\')">删除</a>','<a class="btn btn-sm btn-primary" style="padding:1px 10px;margin-right:3px;" onclick="showEle(\'' + value.id + '\')">查看</a>'] /*]]>*/;
             treeEles.push(treeEle);
         });
         return treeEles;
     }
 
     function deleteEle(id){
-        console.log(id);
+        $.get('/class/deleteClass',{id:id},function(data){
+            console.log(data);
+        })
     }
 
     function showEle(id){
@@ -177,11 +238,13 @@
             dataType:'json',
             success:function(data){
                 if(data.code == '00'){
-                    $('.info-alert').notice_alert({msg:'新增成功',notice_class:'alert-info',closed_event:function(){
+                    layer.alert('新增成功', {icon: 1},function(){
                         location.reload();
-                    }});
+                    });
                 }else{
-                    $('.info-alert').notice_alert({msg:data.message});
+                    layer.alert(data.message,{icon: 5},function(){
+                        location.reload();
+                    });
                 }
             }
         })

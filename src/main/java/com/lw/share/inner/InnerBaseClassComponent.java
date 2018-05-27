@@ -49,6 +49,7 @@ public class InnerBaseClassComponent {
             baseClassEntityWrapper.eq("parent_id",parentId);
         }
         baseClassEntityWrapper.eq("is_delete","0");
+        baseClassEntityWrapper.orderBy("sort");
         return baseClassMapper.selectList(baseClassEntityWrapper);
     }
 }

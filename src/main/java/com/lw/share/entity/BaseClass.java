@@ -48,12 +48,6 @@ public class BaseClass extends Model<BaseClass> {
 
     @TableField("child_num")
     private Integer childNum;
-
-    @TableField("icon")
-    private String icon;
-
-    @TableField("selected_icon")
-    private String selectedIcon;
     
     private String memo;
 
@@ -61,6 +55,11 @@ public class BaseClass extends Model<BaseClass> {
 
     @TableField("selected_icon")
     private String selectedIcon;
+
+    private Integer sort;
+
+    @TableField("top_order")
+    private Integer topOrder;
 
     @TableField("create_user")
     private String createUser;
