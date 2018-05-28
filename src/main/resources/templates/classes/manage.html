@@ -172,10 +172,11 @@
             type:'post',
             dataType: 'json',
             success : function(data){
+                console.log(data);
                 $('#tree').treeview({
                     data:menuData(data.data),
-                    collapseIcon:'glyphicon glyphicon-folder-open',
-                    expandIcon:'glyphicon glyphicon-folder-close',
+                    collapseIcon:'glyphicon glyphicon-minus',
+                    expandIcon:'glyphicon glyphicon-plus',
                     levels:0,
                     showTags:true
                 })
@@ -203,12 +204,13 @@
 
     function menuData(data){
         var treeEles = new Array();
+        console.log(data)
         $(data).each(function(index,value){
             var treeEle = new Object();
             treeEle.id = value.id;
             treeEle.text = value.text;
-            treeEle.icon = value.icon;
-            treeEle.selectedIcon = value.selectedIcon;
+            treeEle.icon = value.t.icon;
+            treeEle.selectedIcon = value.t.selectedIcon;
             /*<![CDATA[*/
             if(value.nodes != null && value.nodes.length > 0){
                 /*]]>*/
