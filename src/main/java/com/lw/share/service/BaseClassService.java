@@ -22,4 +22,6 @@ public interface BaseClassService {
     Integer deleteBaseClassById(String id);
 
     BaseClass queryBaseClassById(String id);
+
+    BaseClass updateBaseClass(BaseClass baseClass);
 }

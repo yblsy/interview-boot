@@ -113,7 +113,7 @@ public class BaseClassServiceImpl implements BaseClassService {
     public Integer deleteBaseClassById(String id) {
         BaseClass baseClass = new BaseClass();
         baseClass.setId(id);
-        baseClass.setIsDelete(IsDeletedEnum.DELETED.getCode());
+        baseClass.setIsDelete(IsDeletedEnum.HAS_DELETED.getCode());
         int result = innerBaseClassComponent.updateBaseClass(baseClass);
         if(result != 1){
             throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000005.getCode(),InterviewErrorEnum.INTER_BC_ER_000005.getValue());
@@ -124,5 +124,15 @@ public class BaseClassServiceImpl implements BaseClassService {
     @Override
     public BaseClass queryBaseClassById(String id) {
         return innerBaseClassComponent.selectOne(id);
+    }
+
+    @Override
+    @Transactional(readOnly = false,rollbackFor = Exception.class)
+    public BaseClass updateBaseClass(BaseClass baseClass) {
+        int result = innerBaseClassComponent.updateBaseClass(baseClass);
+        if(result != 1){
+            throw new InterviewException(InterviewErrorEnum.INTER_BC_ER_000006.getCode(),InterviewErrorEnum.INTER_BC_ER_000006.getValue());
+        }
+        return innerBaseClassComponent.selectOne(baseClass.getId());
     }
 }

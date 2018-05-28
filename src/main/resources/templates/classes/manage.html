@@ -57,13 +57,18 @@
                             <label class="control-label col-lg-2" >节点名称</label>
                             <div class="controls col-lg-10 ">
                                 <input id="node" type="text" class="form-control"/>
+                                <input id="nodeId" type="hidden" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-lg-2" >父节点id</label>
-                            <div class="controls col-lg-10 ">
+                            <div class="controls col-lg-4 ">
                                 <input id="parent_node" type="text" class="form-control"/>
+                            </div>
+                            <label class="control-label col-lg-2" >父节点名称</label>
+                            <div class="controls col-lg-4 ">
+                                <input id="parent_name" type="text" class="form-control"/>
                             </div>
                         </div>
 
@@ -132,7 +137,7 @@
                                 <input type="button" value="增加" class="btn btn-block btn-success" onclick="insertNode()"/>
                             </div>
                             <div class="col-lg-6">
-                                <input type="button" value="更新" class="btn btn-block btn-brown" />
+                                <input type="button" value="更新" class="btn btn-block btn-brown" onclick="updateNode()"/>
                             </div>
                         </div>
 
@@ -156,7 +161,9 @@
         id : null,
         text : null,
         nodes : null,
-        tags : null
+        tags : null,
+        icon:null,
+        selectedIcon:null
     };
 
     $(function(){
@@ -200,6 +207,8 @@
             var treeEle = new Object();
             treeEle.id = value.id;
             treeEle.text = value.text;
+            treeEle.icon = value.icon;
+            treeEle.selectedIcon = value.selectedIcon;
             /*<![CDATA[*/
             if(value.nodes != null && value.nodes.length > 0){
                 /*]]>*/
@@ -213,13 +222,55 @@
 
     function deleteEle(id){
         $.get('/class/deleteClass',{id:id},function(data){
-            console.log(data);
+            if(data.code == '00'){
+                layer.alert('删除成功', {icon: 1},function(){
+                    location.reload();
+                });
+            }else{
+                layer.alert(data.message,{icon: 5});
+            }
         })
     }
 
     function showEle(id){
-        $.post('/class/queryBaseClass',{id:id},function(data){
-            console.log(data);
+        $.get('/class/queryBaseClass',{id:id},function(data){
+            if(data.code == '00'){
+                var data = data.data;
+                $('#nodeId').val(data.id);
+                $('#node').val(data.name);
+                $('#parent_node').val(data.parentId);
+                $('#parent_name').val(data.parentName);
+                $('#url').val(data.url);
+                $('#memo').val(data.memo);
+                $('#icon').val(data.icon);
+                $('#selectedIcon').val(data.selectedIcon);
+                $('#sort').val(data.sort);
+                $('#topOrder').val(data.topOrder);
+            }else{
+                layer.alert(data.message,{icon: 5});
+            }
+        })
+    }
+
+    function updateNode(){
+        $.post('/class/updateBaseClass',{
+            id : $('#nodeId').val(),
+            name:$('#node').val(),
+            parentId:$('#parent_node').val(),
+            url:$('#url').val(),
+            memo:$('#memo').val(),
+            icon:$('#icon').val(),
+            selectedIcon:$('#selectedIcon').val(),
+            sort:$('#sort').val(),
+            topOrder:$('#topOrder').val() == '0'?null:$('#topOrder').val()
+        },function(data){
+            if(data.code == '00'){
+                layer.alert('操作成功', {icon: 1},function(){
+                    location.reload();
+                });
+            }else{
+                layer.alert(data.message,{icon: 5});
+            }
         })
     }
 
@@ -233,7 +284,9 @@
                 url:$('#url').val(),
                 memo:$('#memo').val(),
                 icon:$('#icon').val(),
-                selectedIcon:$('#selectedIcon').val()
+                selectedIcon:$('#selectedIcon').val(),
+                sort:$('#sort').val(),
+                topOrder:$('#topOrder').val() == '0'?null:$('#topOrder').val()
             },
             dataType:'json',
             success:function(data){
@@ -242,9 +295,7 @@
                         location.reload();
                     });
                 }else{
-                    layer.alert(data.message,{icon: 5},function(){
-                        location.reload();
-                    });
+                    layer.alert(data.message,{icon: 5});
                 }
             }
         })

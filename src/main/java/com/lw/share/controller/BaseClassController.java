@@ -1,6 +1,7 @@
 package com.lw.share.controller;
 
 import com.google.gson.Gson;
+import com.lw.share.commons.annotation.RedisUpOpr;
 import com.lw.share.commons.model.InterviewResult;
 import com.lw.share.commons.model.TreeModel;
 import com.lw.share.entity.BaseClass;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import personal.enums.RedisKeyEnum;
 import personal.tools.RedisUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,34 +64,33 @@ public class BaseClassController{
     }
 
     @RequestMapping(value = "insertClass",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @RedisUpOpr(key = RedisKeyEnum.IV_MENU)
     @ResponseBody
     public InterviewResult insertClass(BaseClass baseClass){
         Integer result = baseClassService.insertBaseClass(baseClass);
-
-        //查询出所有节点
-        List<TreeModel<BaseClass>> data = baseClassService.queryBaseClasses4TreeByParentId(null);
-        if(redisUtils.hasKey(RedisKeyEnum.IV_MENU.getCode())){
-            Map<String,Object> redisMap = redisUtils.getRedisMap(RedisKeyEnum.IV_MENU.getCode());
-            redisMap.put("data",gson.toJson(data));
-            redisUtils.setRedisForVersion(RedisKeyEnum.IV_MENU.getCode(),redisMap);
-        }else{
-            redisUtils.setRedisForVersion(RedisKeyEnum.IV_MENU.getCode(),new HashMap<String,Object>(){{ put("data",gson.toJson(data)); }});
-        }
-
         return InterviewResult.success(result,"新增成功");
     }
 
-    @RequestMapping(value = "deleteClass",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "deleteClass",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
+    @RedisUpOpr(key = RedisKeyEnum.IV_MENU)
     @ResponseBody
     public InterviewResult deleteClass(String id){
         Integer result = baseClassService.deleteBaseClassById(id);
         return InterviewResult.success(result,"删除成功");
     }
 
-    @RequestMapping(value = "queryBaseClass",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "queryBaseClass",method = RequestMethod.GET,produces = "application/json;charset=utf-8")
     @ResponseBody
     public InterviewResult queryBaseClass(String id){
         BaseClass result = baseClassService.queryBaseClassById(id);
+        return InterviewResult.success(result,"查询成功");
+    }
+
+    @RequestMapping(value = "updateBaseClass",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @RedisUpOpr(key = RedisKeyEnum.IV_MENU)
+    @ResponseBody
+    public InterviewResult updateBaseClass(BaseClass baseClass){
+        BaseClass result = baseClassService.updateBaseClass(baseClass);
         return InterviewResult.success(result,"查询成功");
     }
 }
