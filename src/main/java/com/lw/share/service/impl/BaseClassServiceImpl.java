@@ -91,15 +91,22 @@ public class BaseClassServiceImpl implements BaseClassService {
     }
 
     @Override
-    public List<TreeModel<BaseClass>> queryBaseClasses4TreeByParentId(String parentId) {
+    public List<TreeModel<BaseClass>> queryBaseClasses4TreeByParentId(String parentId,StringBuffer route) {
         List<TreeModel<BaseClass>> results = Lists.newArrayList();
         //所有顶级节点
         List<BaseClass> baseClasses = innerBaseClassComponent.selectBaseClassesByParentId(parentId);
         for (BaseClass baseClass : baseClasses){
+            if(Strings.isNullOrEmpty(baseClass.getParentId())){
+                route = new StringBuffer();
+            }
             //当前节点
             TreeModel<BaseClass> treeModel = TreeModel.getChildByT(baseClass);
+            //增加路径
+            route.append(baseClass.getName());
+            treeModel.setRoute(route.toString());
+            route.append("/");
             //查找子节点
-            List<TreeModel<BaseClass>> children = this.queryBaseClasses4TreeByParentId(baseClass.getId());
+            List<TreeModel<BaseClass>> children = this.queryBaseClasses4TreeByParentId(baseClass.getId(),route);
             if(children != null && children.size() > 0){
                 treeModel.setNodes(children);
             }

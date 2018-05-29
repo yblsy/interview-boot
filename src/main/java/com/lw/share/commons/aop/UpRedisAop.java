@@ -46,7 +46,7 @@ public class UpRedisAop {
         if(redisUpOpr.key().equals(RedisKeyEnum.IV_MENU)){
             log.info("开始更新菜单节点redis");
             //查询出所有节点
-            List<TreeModel<BaseClass>> data = baseClassService.queryBaseClasses4TreeByParentId(null);
+            List<TreeModel<BaseClass>> data = baseClassService.queryBaseClasses4TreeByParentId(null,null);
             if(redisUtils.hasKey(RedisKeyEnum.IV_MENU.getCode())){
                 Map<String,Object> redisMap = redisUtils.getRedisMap(RedisKeyEnum.IV_MENU.getCode());
                 redisMap.put("data",gson.toJson(data));

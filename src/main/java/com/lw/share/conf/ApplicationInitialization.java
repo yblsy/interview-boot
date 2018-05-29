@@ -42,7 +42,7 @@ public class ApplicationInitialization implements ApplicationRunner, Ordered {
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
         //查询出所有节点
-        List<TreeModel<BaseClass>> result = baseClassService.queryBaseClasses4TreeByParentId(null);
+        List<TreeModel<BaseClass>> result = baseClassService.queryBaseClasses4TreeByParentId(null,null);
         redisUtils.setRedisForVersion(RedisKeyEnum.IV_MENU.getCode(),new HashMap<String,Object>(){{ put("data",gson.toJson(result)); }});
     }
 

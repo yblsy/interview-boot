@@ -28,6 +28,9 @@ public class TreeModel<T> implements Serializable{
 
     private String text;
 
+    //路径
+    private String route;
+
     private T t;
 
     private List<TreeModel<T>> nodes;

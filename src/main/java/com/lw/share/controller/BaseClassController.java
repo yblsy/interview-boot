@@ -58,7 +58,7 @@ public class BaseClassController{
             Map<String,Object> result = redisUtils.getRedisMap(RedisKeyEnum.IV_MENU.getCode());
             results = gson.fromJson(result.get("data").toString(),List.class);
         }else{
-            results = baseClassService.queryBaseClasses4TreeByParentId(null);
+            results = baseClassService.queryBaseClasses4TreeByParentId(null,null);
         }
         return InterviewResult.success(results,"查询成功");
     }

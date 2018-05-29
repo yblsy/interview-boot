@@ -1,0 +1,12 @@
+.header {
+    height: 50px;
+    background: #75b9e6;
+    z-index: 999;
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+
+.text-slogan {
+    color: #ffffff;
+}
