@@ -8,6 +8,7 @@ package com.lw.share.commons.enums;
 public enum SeqConfEnum {
 
     T_BASE_CLASS("SEQ_BASE_CLASS","表Base_Class序列"),
+    T_BASE_RESOURCES("SEQ_BASE_RESOURCES","表Base_Resources序列"),
     ;
 
     private String code;
