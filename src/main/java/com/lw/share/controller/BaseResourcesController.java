@@ -7,6 +7,8 @@ import com.lw.share.entity.BaseResources;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author 刘晨
@@ -23,17 +25,18 @@ public class BaseResourcesController {
         return null;
     }
 
-    @RequestMapping("addRes")
+    @RequestMapping(value = "addRes",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
+    @ResponseBody
     public InterviewResult addRes(BaseResources baseResources){
-        return null;
+        return InterviewResult.success(baseResources,"Success");
     }
 
-    @RequestMapping("upRes")
+    @RequestMapping(value = "upRes",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public InterviewResult upRes(BaseResources baseResources){
         return null;
     }
 
-    @RequestMapping("delRes")
+    @RequestMapping(value = "delRes",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     public InterviewResult delRes(String id){
         return null;
     }

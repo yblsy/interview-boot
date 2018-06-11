@@ -67,7 +67,7 @@
                                 </h4>
                             </div>
                             <div class="panel-body">
-                                <form class="form-horizontal group-border hover-stripped">
+                                <form class="form-horizontal group-border hover-stripped" id="baseClass">
                                     <div class="form-group">
                                         <label class="control-label col-lg-2" >节点名称</label>
                                         <div class="controls col-lg-10 ">
@@ -137,12 +137,12 @@
                                                     </ul>
                                                 </div>
                                                 <span  class="input-group-addon input-group-addon-remove quantity-remove btn spin-down" data-spin="down">
-                                        <span class="glyphicon glyphicon-minus"></span>
-                                    </span>
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </span>
                                                 <input type="text" id="topOrder" value="" class="form-control quantity-count" placeholder="输入数字进行排序" data-min="0"/>
                                                 <span class="input-group-addon input-group-addon-remove quantity-add btn spin-up" data-spin="up">
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </span>
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -198,7 +198,8 @@
                                 <tr>
                                     <th>资源名称</th>
                                     <th>资源作者</th>
-                                    <th class="col-lg-6">资源url</th>
+                                    <th class="col-lg-7">资源url</th>
+                                    <th class="col-lg-1">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -206,21 +207,25 @@
                                     <td>Tanmay</td>
                                     <td>Bangalore</td>
                                     <td>Tanmay</td>
+                                    <td>Tanmay</td>
                                 </tr>
                                 <tr>
                                     <td>Sachin</td>
                                     <td>Mumbai</td>
                                     <td>Sachin</td>
+                                    <td>Tanmay</td>
                                 </tr>
                                 <tr>
                                     <td>Sachin</td>
                                     <td>Mumbai</td>
                                     <td>Sachin</td>
+                                    <td>Tanmay</td>
                                 </tr>
                                 <tr>
                                     <td>Sachin</td>
                                     <td>Mumbai</td>
                                     <td>Sachin</td>
+                                    <td>Tanmay</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -236,7 +241,7 @@
                             </h4>
                         </div>
                         <div class="panel-body">
-                            <form class="form-horizontal group-border hover-stripped">
+                            <form class="form-horizontal group-border hover-stripped" id="baseResource">
                                 <!--资源名称-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >资源名称</label>
@@ -280,10 +285,39 @@
                                         <input id="keyWord03" type="text" class="form-control"/>
                                     </div>
                                 </div>
+                                <!--备注-->
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4" >备注</label>
+                                    <div class="controls col-lg-8 ">
+                                        <input id="resMemo" type="text" class="form-control"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-lg-4" >选择置顶</label>
+                                    <div class="controls col-lg-8">
+                                        <div class="input-group input-group-option quantity-wrapper spinner" data-trigger="spinner">
+                                            <div class="input-group-btn res-top-order">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-text">不置顶</span>&nbsp;<span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a th:value="0" href="#">不置顶</a></li>
+                                                    <li><a th:value="1" href="#">置顶</a></li>
+                                                </ul>
+                                            </div>
+                                            <span  class="input-group-addon input-group-addon-remove quantity-remove btn spin-down" data-spin="down">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </span>
+                                            <input type="text" id="resTopOrder" value="" class="form-control quantity-count" placeholder="输入数字进行排序" data-min="0"/>
+                                            <span class="input-group-addon input-group-addon-remove quantity-add btn spin-up" data-spin="up">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">
                                     <div class="col-lg-6">
-                                        <input type="button" value="增加" class="btn btn-block btn-success" onclick=""/>
+                                        <input type="button" value="增加" class="btn btn-block btn-success" onclick="addRes()"/>
                                     </div>
                                     <div class="col-lg-6">
                                         <input type="button" value="更新" class="btn btn-block btn-brown" onclick=""/>
@@ -322,7 +356,6 @@
             type:'post',
             dataType: 'json',
             success : function(data){
-                console.log(data);
                 $('#tree').treeview({
                     data:menuData(data.data),
                     collapseIcon:'glyphicon glyphicon-minus',
@@ -333,28 +366,41 @@
             },
             complete : function(){
                 $('.node-tree').on('click',function(){
-                    console.log(1);
-                    console.log($('#tree').treeview('getSelected'));
+
                 })
             }
         });
 
         $('#topOrder').attr("disabled",true);
+        $('#resTopOrder').attr("disabled",true);
 
-        $('.dropdown-menu a').on('click',function(){
-            $(this).parents('div').find('button>span[class=\'dropdown-text\']').html($(this).html());
+        $('#baseClass').find('.dropdown-menu a').on('click',function(){
+            console.log('0');
+            console.log($(this).parents('div:eq(0)'));
+            $(this).parents('div:eq(0)').find('button>span[class=\'dropdown-text\']').html($(this).html());
 
             if($(this).html() == '不置顶'){
                 $('#topOrder').attr("disabled",true);
             }else{
                 $('#topOrder').attr("disabled",false);
             }
+        });
+
+        $('#baseResource').find('.dropdown-menu a').on('click',function(){
+            console.log('1');
+            console.log($(this).parents('div:eq(0)'));
+            $(this).parents('div:eq(0)').find('button>span[class=\'dropdown-text\']').html($(this).html());
+
+            if($(this).html() == '不置顶'){
+                $('#resTopOrder').attr("disabled",true);
+            }else{
+                $('#resTopOrder').attr("disabled",false);
+            }
         })
     });
 
     function menuData(data){
         var treeEles = new Array();
-        console.log(data)
         $(data).each(function(index,value){
             var treeEle = new Object();
             treeEle.id = value.id;
@@ -472,6 +518,35 @@
 
     function goBack(){
         $('#baseClassNodes').carousel('prev');
+    }
+
+    function addRes(){
+        $.ajax({
+            url:"/res/addRes",
+            type:'post',
+            data:{
+                classId:$('#nodeId').val(),
+                className:$('#node').val(),
+                url:$('#resUrl').val(),
+                resName:$('#resName').val(),
+                resAuthor:$('#resAuthor').val(),
+                keyWord01:$('#keyWord01').val(),
+                keyWord02:$('#keyWord02').val(),
+                keyWord03:$('#keyWord03').val(),
+                memo:$('#resMemo').val(),
+                topOrder:$('#resTopOrder').val() == '0'?null:$('#resTopOrder').val()
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.code == '00'){
+                    layer.alert('新增成功', {icon: 1},function(){
+                        //location.reload();
+                    });
+                }else{
+                    layer.alert(data.message,{icon: 5});
+                }
+            }
+        })
     }
 </script>
 </html>
