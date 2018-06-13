@@ -1,5 +1,7 @@
 package com.lw.share.service;
 
+import com.lw.share.entity.BaseResources;
+
 /**
  * @author 刘晨
  * @create 2018-05-06 21:41
@@ -7,4 +9,5 @@ package com.lw.share.service;
  **/
 public interface BaseResourcesService {
 
+    BaseResources addRes(BaseResources baseResources);
 }

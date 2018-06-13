@@ -1,5 +1,6 @@
 package com.lw.share.inner;
 
+import com.lw.share.entity.BaseResources;
 import com.lw.share.mapper.BaseResourcesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,4 +15,8 @@ public class InnerBaseResourcesComponent {
 
     @Autowired(required = false)
     private BaseResourcesMapper baseResourcesMapper;
+
+    public Integer addRes(BaseResources baseResources){
+        return baseResourcesMapper.insertAllColumn(baseResources);
+    }
 }

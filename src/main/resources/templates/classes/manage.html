@@ -246,50 +246,52 @@
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >资源名称</label>
                                     <div class="controls col-lg-8 ">
-                                        <input id="resName" type="text" class="form-control"/>
-                                        <input id="resId" type="hidden" />
+                                        <input id="resName" name="resName" type="text" class="form-control"/>
+                                        <input id="resId" name="id" type="hidden" />
+                                        <input id="resClassId" name="classId" type="hidden" />
+                                        <input id="resClassName" name="className" type="hidden" />
                                     </div>
                                 </div>
                                 <!--资源作者-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >资源作者</label>
                                     <div class="controls col-lg-8 ">
-                                        <input id="resAuthor" type="text" class="form-control"/>
+                                        <input id="resAuthor" name="resAuthor" type="text" class="form-control"/>
                                     </div>
                                 </div>
                                 <!--资源url-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >url</label>
                                     <div class="controls col-lg-8 ">
-                                        <input id="resUrl" type="text" class="form-control"/>
+                                        <input id="resUrl" name="url" type="text" class="form-control"/>
                                     </div>
                                 </div>
                                 <!--关键词三连发-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >关键词1</label>
                                     <div class="controls col-lg-8 ">
-                                        <input id="keyWord01" type="text" class="form-control"/>
+                                        <input id="keyWord01" name="keyWord01" type="text" class="form-control"/>
                                     </div>
                                 </div>
                                 <!--关键词三连发-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >关键词2</label>
                                     <div class="controls col-lg-8 ">
-                                        <input id="keyWord02" type="text" class="form-control"/>
+                                        <input id="keyWord02" name="keyWord02" type="text" class="form-control"/>
                                     </div>
                                 </div>
                                 <!--关键词三连发-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >关键词3</label>
                                     <div class="controls col-lg-8 ">
-                                        <input id="keyWord03" type="text" class="form-control"/>
+                                        <input id="keyWord03" name="keyWord03" type="text" class="form-control"/>
                                     </div>
                                 </div>
                                 <!--备注-->
                                 <div class="form-group">
                                     <label class="control-label col-lg-4" >备注</label>
                                     <div class="controls col-lg-8 ">
-                                        <input id="resMemo" type="text" class="form-control"/>
+                                        <input id="resMemo" name="memo" type="text" class="form-control"/>
                                     </div>
                                 </div>
 
@@ -307,7 +309,7 @@
                                             <span  class="input-group-addon input-group-addon-remove quantity-remove btn spin-down" data-spin="down">
                                                     <span class="glyphicon glyphicon-minus"></span>
                                                 </span>
-                                            <input type="text" id="resTopOrder" value="" class="form-control quantity-count" placeholder="输入数字进行排序" data-min="0"/>
+                                            <input type="text" id="resTopOrder" value="" name="topOrder" class="form-control quantity-count" placeholder="输入数字进行排序" data-min="0"/>
                                             <span class="input-group-addon input-group-addon-remove quantity-add btn spin-up" data-spin="up">
                                                     <span class="glyphicon glyphicon-plus"></span>
                                                 </span>
@@ -375,8 +377,6 @@
         $('#resTopOrder').attr("disabled",true);
 
         $('#baseClass').find('.dropdown-menu a').on('click',function(){
-            console.log('0');
-            console.log($(this).parents('div:eq(0)'));
             $(this).parents('div:eq(0)').find('button>span[class=\'dropdown-text\']').html($(this).html());
 
             if($(this).html() == '不置顶'){
@@ -387,8 +387,6 @@
         });
 
         $('#baseResource').find('.dropdown-menu a').on('click',function(){
-            console.log('1');
-            console.log($(this).parents('div:eq(0)'));
             $(this).parents('div:eq(0)').find('button>span[class=\'dropdown-text\']').html($(this).html());
 
             if($(this).html() == '不置顶'){
@@ -514,6 +512,8 @@
         }
         $('#baseClassNodes').carousel('next');
         $('#selectedNodeName').html($('#node').val());
+        $('#resClassId').val($('#nodeId').val());
+        $('#resClassName').val($('#node').val());
     }
 
     function goBack(){
@@ -524,24 +524,12 @@
         $.ajax({
             url:"/res/addRes",
             type:'post',
-            data:{
-                classId:$('#nodeId').val(),
-                className:$('#node').val(),
-                url:$('#resUrl').val(),
-                resName:$('#resName').val(),
-                resAuthor:$('#resAuthor').val(),
-                keyWord01:$('#keyWord01').val(),
-                keyWord02:$('#keyWord02').val(),
-                keyWord03:$('#keyWord03').val(),
-                memo:$('#resMemo').val(),
-                topOrder:$('#resTopOrder').val() == '0'?null:$('#resTopOrder').val()
-            },
+            data:$('#baseResource').serialize(),
             dataType:'json',
             success:function(data){
+                console.log(data);
                 if(data.code == '00'){
-                    layer.alert('新增成功', {icon: 1},function(){
-                        //location.reload();
-                    });
+                    layer.alert('新增成功', {icon: 1});
                 }else{
                     layer.alert(data.message,{icon: 5});
                 }

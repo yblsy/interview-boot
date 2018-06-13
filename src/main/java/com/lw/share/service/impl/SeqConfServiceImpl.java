@@ -25,7 +25,6 @@ public class SeqConfServiceImpl implements SeqConfService {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMMddss");
 
     @Override
-    @Transactional(readOnly = false,rollbackFor = {Exception.class})
     public String getId(String seqName) {
         String result = "";
         // 查询出指定序列的当前值，并且进行更新
@@ -37,7 +36,10 @@ public class SeqConfServiceImpl implements SeqConfService {
         if(seqConf.getSeqCurrent() > seqConf.getSeqEnd()){
             seqConf.setSeqCurrent(seqConf.getSeqStart());
         }
-        seqConfMapper.updateAllColumnById(seqConf);
+        //更新
+        synchronized(this){
+            seqConfMapper.updateAllColumnById(seqConf);
+        }
         return result;
     }
 }
