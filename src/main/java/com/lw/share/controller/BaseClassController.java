@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import personal.enums.RedisKeyEnum;
 import personal.tools.RedisUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,6 +60,10 @@ public class BaseClassController{
             results = gson.fromJson(result.get("data").toString(),List.class);
         }else{
             results = baseClassService.queryBaseClasses4TreeByParentId(null,null);
+            Map<String,Object> redisValue = new HashMap<>();
+            redisValue.put("data",gson.toJson(results));
+            
+            redisUtils.setRedisForVersion(RedisKeyEnum.IV_MENU.getCode(),redisValue);
         }
         return InterviewResult.success(results,"查询成功");
     }

@@ -20,7 +20,7 @@ import java.util.Date;
 @Getter
 @Setter
 @TableName("base_resources")
-public class BaseResources extends Model<BaseClass> {
+public class BaseResources extends Model<BaseResources> {
 
     private static final long serialVersionUID = 5477750803810158136L;
 

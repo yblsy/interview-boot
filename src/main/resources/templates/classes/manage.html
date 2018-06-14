@@ -199,10 +199,10 @@
                                     <th>资源名称</th>
                                     <th>资源作者</th>
                                     <th class="col-lg-7">资源url</th>
-                                    <th class="col-lg-1">操作</th>
+                                    <th class="col-lg-2">操作</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="res-tbody">
                                 <tr>
                                     <td>Tanmay</td>
                                     <td>Bangalore</td>
@@ -510,10 +510,14 @@
             layer.alert("请先选择某一节点",{icon: 5});
             return false;
         }
-        $('#baseClassNodes').carousel('next');
-        $('#selectedNodeName').html($('#node').val());
-        $('#resClassId').val($('#nodeId').val());
-        $('#resClassName').val($('#node').val());
+
+        //查询资源
+        queryRes($('#nodeId').val(),function(){
+            $('#baseClassNodes').carousel('next');
+            $('#selectedNodeName').html($('#node').val());
+            $('#resClassId').val($('#nodeId').val());
+            $('#resClassName').val($('#node').val());
+        });
     }
 
     function goBack(){
@@ -529,7 +533,94 @@
             success:function(data){
                 console.log(data);
                 if(data.code == '00'){
-                    layer.alert('新增成功', {icon: 1});
+                    layer.alert('新增成功', {icon: 1},function(index){
+                        queryRes($('#resClassId').val(),function(){
+
+                        });
+                        layer.close(index);
+                    });
+                }else{
+                    layer.alert(data.message,{icon: 5});
+                }
+            }
+        })
+    }
+
+    function queryRes(classId,method){
+        $.ajax({
+            url:"/res/queryResByClass",
+            type:'get',
+            data:{
+                classId:classId
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.code == '00'){
+                    $('.res-tbody').empty();
+                    var trInfos = '';
+                    $(data.data).each(function(index,value){
+                        trInfos += '<tr>';
+                        trInfos += '<td>' + value.resName + '</td>';
+                        trInfos += '<td>' + value.resAuthor + '</td>';
+                        trInfos += '<td>' + value.url + '</td>';
+                        trInfos += '<td><a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="deleteResEle(\'' + value.id + '\')">删除</a>&nbsp;<a class="btn btn-sm btn-primary" style="padding:1px 10px;" onclick="showResEle(\'' + value.id + '\')">查看</a></td>';
+                        trInfos += '</tr>';
+                    })
+                    $('.res-tbody').append(trInfos);
+                    method();
+                }else{
+                    layer.alert(data.message,{icon: 5});
+                }
+            }
+        })
+    }
+
+    function deleteResEle(id){
+        $.ajax({
+            url:"/res/delRes",
+            type:'post',
+            data:{
+                id:id
+            },
+            dataType:'json',
+            success:function(data){
+                console.log(data);
+                if(data.code == '00'){
+                    layer.alert("删除成功",{icon: 1},function(index){
+                        queryRes($('#resClassId').val(),function(){
+
+                        });
+                        layer.close(index);
+                    });
+                }else{
+                    layer.alert(data.message,{icon: 5});
+                }
+            }
+        })
+    }
+
+    function showResEle(id){
+        $.ajax({
+            url:"/res/queryOneRes",
+            type:'get',
+            data:{
+                id:id
+            },
+            dataType:'json',
+            success:function(data){
+                if(data.code == '00'){
+                    $('#resName').val(data.data.resName);
+                    $('#resId').val(data.data.id);
+                    $('#resAuthor').val(data.data.resAuthor);
+                    $('#resUrl').val(data.data.url);
+                    $('#keyWord01').val(data.data.keyWord01);
+                    $('#keyWord02').val(data.data.keyWord02);
+                    $('#keyWord03').val(data.data.keyWord03);
+                    $('#resMemo').val(data.data.memo);
+                    if(data.data.topOrder > 0){
+                        $('#baseResource').find('.dropdown-menu a:eq(1)').click();
+                        $('#resTopOrder').val(data.data.topOrder);
+                    }
                 }else{
                     layer.alert(data.message,{icon: 5});
                 }
