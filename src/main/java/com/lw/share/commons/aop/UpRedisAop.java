@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import personal.enums.RedisKeyEnum;
 import personal.tools.RedisUtils;
@@ -42,9 +43,10 @@ public class UpRedisAop {
 
 
     @After("within(com.lw.share.controller..*) && @annotation(redisUpOpr)")
+    @Async
     public void after(JoinPoint joinPoint,RedisUpOpr redisUpOpr){
         if(redisUpOpr.key().equals(RedisKeyEnum.IV_MENU)){
-            log.info("开始更新菜单节点redis");
+            log.info("开始更新菜单节点redis,启用的线程名"+Thread.currentThread().getName());
             //查询出所有节点
             List<TreeModel<BaseClass>> data = baseClassService.queryBaseClasses4TreeByParentId(null,null);
             if(redisUtils.hasKey(RedisKeyEnum.IV_MENU.getCode())){

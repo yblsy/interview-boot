@@ -16,6 +16,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.lang.reflect.Method;
 
@@ -26,6 +27,7 @@ import java.lang.reflect.Method;
  **/
 @Configuration
 @EnableCaching
+@EnableAsync
 public class RedisConfig extends CachingConfigurerSupport {
     @Bean
     public KeyGenerator keyGenerator() {

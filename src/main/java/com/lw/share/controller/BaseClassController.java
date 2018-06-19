@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import personal.enums.RedisKeyEnum;
 import personal.tools.RedisUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,11 @@ public class BaseClassController{
         return path;
     }
 
+    @RequestMapping(value = "/home/tomain",method = RequestMethod.GET)
+    public String toMain(){
+        return "home/main";
+    }
+
     @RequestMapping(value = "tomanage",method = RequestMethod.GET)
     public String toManage(){
         log.info("into manage");
@@ -62,7 +68,7 @@ public class BaseClassController{
             results = baseClassService.queryBaseClasses4TreeByParentId(null,null);
             Map<String,Object> redisValue = new HashMap<>();
             redisValue.put("data",gson.toJson(results));
-            
+
             redisUtils.setRedisForVersion(RedisKeyEnum.IV_MENU.getCode(),redisValue);
         }
         return InterviewResult.success(results,"查询成功");

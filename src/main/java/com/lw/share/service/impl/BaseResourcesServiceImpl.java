@@ -43,7 +43,7 @@ public class BaseResourcesServiceImpl implements BaseResourcesService {
         List<BaseResources> result = innerBaseResourcesComponent.selectReses(baseResources);
         ApplicationCheck.compareElements(result.size(),1,new InterviewException(InterviewErrorEnum.INTER_BR_ER_000008.getCode(),InterviewErrorEnum.INTER_BR_ER_000008.getValue()));
         return result.get(0);
-    }B
+    }
 
     @Override
     @Transactional(readOnly = false,rollbackFor = Exception.class)
