@@ -40,7 +40,18 @@ $(document).ready(function() {
                 }
             });
         }
-    })
+    });
+
+    // $('.panel-body').slimScroll({
+    //     position: "right",
+    //     height: '100%',
+    //     distance: '0',
+    //     railVisible: false,
+    //     size: '5px',
+    //     color: '#999',
+    //     railOpacity: '0.5',
+    //     railColor: '#eee'
+    // });
 
 });
 

@@ -20,7 +20,7 @@ body {
 
 /* 左侧长菜单 */
 #sidebar {
-    width: 25%;
+    width: 20%;
     height: auto;
     position: absolute;
     left: 0;
@@ -47,7 +47,7 @@ body {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 25%;
+    width: 20%;
     background: #f3f5f6;
     border-right: 1px solid #e7e7e2;
     z-index: -1;
@@ -299,4 +299,203 @@ body {
 }
 .notification.onhover {
     opacity: 0;
+}
+
+/* ------------------ 右侧数据栏 --------------------*/
+#content {
+    margin-left: 20%;
+    padding: 50px 25px 25px 25px;
+}
+
+#content .content-wrapper {
+    height: auto;
+    float: left;
+    width: 100%;
+    position: relative;
+}
+
+#content .content-wrapper .heading:before,
+#content .content-wrapper .heading:after {
+    content: " ";
+    display: table;
+}
+#content .content-wrapper .heading:after {
+    clear: both;
+}
+#content .content-wrapper .heading h1.page-header {
+    font-size: 24px;
+    border-bottom: none;
+    margin: 12.5px 0 12.5px 0;
+    padding: 0;
+    background: #ffffff;
+    font-weight: 300;
+    width: auto;
+}
+#content .content-wrapper .heading h1.page-header i {
+    font-size: 42px;
+    opacity: 0.5;
+    filter: alpha(opacity=10);
+    margin-right: 10px;
+    float: none;
+}
+#content .content-wrapper .heading h1.page-header [class*="icomoon-"] {
+    margin-top: -4px;
+}
+#content .content-wrapper .heading .breadcrumb {
+    line-height: 20px;
+    border-radius: 4px;
+    background: #f3f5f6;
+    padding: 15px;
+    margin-bottom: 12.5px;
+}
+#content .content-wrapper .heading .breadcrumb i {
+    color: #acb1b8;
+    font-size: 16px;
+    padding: 0 5px;
+    margin-top: -3px;
+}
+#content .content-wrapper .heading .breadcrumb i.divider {
+    padding-right: 0;
+}
+#content .content-wrapper .heading .breadcrumb > li {
+    display: inline-block;
+}
+#content .content-wrapper .heading .breadcrumb > li + li:before {
+    content: "";
+    float: left;
+    padding: 0 2px;
+    color: #cccccc;
+}
+#content .content-wrapper .heading .option-buttons {
+    float: right;
+    width: auto;
+    height: 50px;
+    margin-bottom: 20px;
+    margin-top: -60px;
+    padding-left: 15px;
+}
+#content .content-wrapper .heading .option-buttons .dropdown-menu {
+    margin-top: 15px;
+}
+#content .content-wrapper .heading .option-buttons .dropdown-menu:after,
+#content .content-wrapper .heading .option-buttons .dropdown-menu:before {
+    bottom: 100%;
+    right: 12px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+#content .content-wrapper .heading .option-buttons .dropdown-menu:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-bottom-color: #ffffff;
+    border-width: 10px;
+    margin-left: -10px;
+    right: 13px;
+}
+#content .content-wrapper .heading .option-buttons .dropdown-menu:before {
+    border-color: rgba(231, 231, 226, 0);
+    border-bottom-color: #e7e7e2;
+    border-width: 11px;
+    margin-left: -11px;
+}
+#content .content-wrapper .heading .option-buttons .btn-toolbar:not(.note-toolbar) > .btn-group.open .dropdown-toggle {
+    box-shadow: none;
+}
+#content .content-wrapper .heading .option-buttons .btn-toolbar:not(.note-toolbar) > .btn-group > .btn {
+    padding: 12px;
+}
+#content .content-wrapper .heading .option-buttons .btn-toolbar:not(.note-toolbar) > .btn-group a {
+    line-height: 24px;
+}
+#content .content-wrapper .heading .option-buttons .option-dropdown {
+    width: 320px;
+    padding: 10px;
+    float: left;
+}
+#content .content-wrapper .heading .option-buttons #lock-timer {
+    vertical-align: text-bottom;
+}
+
+#content .content-wrapper .heading h2.page-header {
+    font-size: 24px;
+    border-bottom: none;
+    margin: 12.5px 0 12.5px 0;
+    padding: 0;
+    background: #ffffff;
+    font-weight: 300;
+    width: auto;
+}
+
+/* ------------------ Shortcut buttons --------------------*/
+.shortcut-button {
+    float: left;
+}
+.shortcut-button a {
+    height: 100px;
+    width: 100px;
+    text-decoration: none;
+    float: left;
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+}
+.shortcut-button a:hover {
+    -webkit-transition: background;
+    transition: background;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    background: #f3f5f6;
+}
+.shortcut-button a:hover span {
+    color: #3d4552;
+}
+.shortcut-button a:hover i.color-blue {
+    color: #3498da;
+}
+.shortcut-button a:hover i.color-orange {
+    color: #ef8d1b;
+}
+.shortcut-button a:hover i.color-yellow {
+    color: #ffb219;
+}
+.shortcut-button a:hover i.color-teal {
+    color: #61bca7;
+}
+.shortcut-button a:hover i.color-green {
+    color: #abe5c2;
+}
+.shortcut-button a:hover i.color-dark {
+    color: #a5adbc;
+}
+.shortcut-button a:hover i.color-red {
+    color: #f13d3d;
+}
+.shortcut-button i {
+    font-size: 48px;
+    height: 64px;
+    width: 64px;
+    -webkit-transition: color;
+    transition: color;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    margin-top: 10px;
+}
+.shortcut-button span {
+    display: block;
+    line-height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    color: #768399;
+    margin-top: -10px;
+    -webkit-transition: color;
+    transition: color;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    text-align: center;
 }
