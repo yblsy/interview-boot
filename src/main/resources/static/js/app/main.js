@@ -60,9 +60,9 @@ function sideMenuData(data){
     $(data).each(function(index,value){
         htmlStr += '<li>';
         if(value.t.level == 1){
-            htmlStr += '<a href=\'' + ((value.t.url == null || value.t.url == '' || value.t.url == undefined)?'#':value.t.url) + '\' >' + value.text;
+            htmlStr += '<a href=\'' + ((value.t.url == null || value.t.url == '' || value.t.url == undefined)?'#':value.t.url) + '\' onclick=\'showRes("'+ value.id +'","'+value.text+'","'+value.route+'")\' >' + value.text;
         }else{
-            htmlStr += '<a href=\'' + ((value.t.url == null || value.t.url == '' || value.t.url == undefined)?'#':value.t.url) + '\' style=\'padding-left:'+((value.t.level - 1) * 10)+'%\'>' + value.text;
+            htmlStr += '<a href=\'' + ((value.t.url == null || value.t.url == '' || value.t.url == undefined)?'#':value.t.url) + '\' onclick=\'showRes("'+ value.id +'","'+value.text+'","'+value.route+'")\' style=\'padding-left:'+((value.t.level - 1) * 10)+'%\'>' + value.text;
         }
 
         if(value.t.icon != '' && value.t.icon != null){
@@ -79,4 +79,21 @@ function sideMenuData(data){
     });
 
     return htmlStr;
+}
+
+function showRes(id,name,path){
+    $.get("/res/queryResByClass",{classId:id},function(data){
+        console.log(data);
+        $('#resInfoTab tbody').empty();
+        $(data.data).each(function(index,value){
+            var resHtml = '<tr>';
+            resHtml += '<td>' + value.resName +'</td>';
+            resHtml += '<td><a href="'+value.url+'" target="_blank">' + value.url +'</a></td>';
+            resHtml += '<td>' + value.keyWord01 + '  ' + value.keyWord02 + '  ' + value.keyWord03 +'</td>';
+            resHtml += '</tr>';
+            $('#resInfoTab tbody').append(resHtml);
+        });
+        $('#classRoute').html(path);
+        $('#classTitle span').html(name);
+    },'json');
 }

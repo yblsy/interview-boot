@@ -49,7 +49,7 @@ public class BaseResourcesController {
     @RequestMapping(value = "upRes",method = RequestMethod.POST,produces = "application/json;charset=utf-8")
     @ResponseBody
     public InterviewResult upRes(BaseResources baseResources){
-        return null;
+        return InterviewResult.success(baseResourcesService.updateResById(baseResources));
     }
 
     @RequestMapping(value = "delRes",method = RequestMethod.POST,produces = "application/json;charset=utf-8")

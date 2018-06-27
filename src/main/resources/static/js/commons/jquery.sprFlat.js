@@ -985,16 +985,16 @@
             tables.each(function( index ) {
                 $(this).wrap('<div class="table-responsive" />');
                 if(plugin.settings.tables.customscroll) {
-                    $("div.table-responsive").slimScrollHorizontal({
-                        size: plugin.settings.customScroll.size,
-                        color: plugin.settings.customScroll.color,
-                        railOpacity: plugin.settings.customScroll.opacity,
-                        width: '100%',
-                        positon: 'bottom',
-                        start: 'left',
-                        railVisible: true,
-                        distance: "3px",
-                    });
+                    // $("div.table-responsive").slimScrollHorizontal({
+                    //     size: plugin.settings.customScroll.size,
+                    //     color: plugin.settings.customScroll.color,
+                    //     railOpacity: plugin.settings.customScroll.opacity,
+                    //     width: '100%',
+                    //     positon: 'bottom',
+                    //     start: 'left',
+                    //     railVisible: true,
+                    //     distance: "3px",
+                    // });
                 }
             });
         }

@@ -323,7 +323,7 @@
                                         <input type="button" value="增加" class="btn btn-block btn-success" onclick="addRes()"/>
                                     </div>
                                     <div class="col-lg-6">
-                                        <input type="button" value="更新" class="btn btn-block btn-brown" onclick=""/>
+                                        <input type="button" value="更新" class="btn btn-block btn-brown" onclick="updateRes()"/>
                                     </div>
                                 </div>
                             </form>
@@ -622,6 +622,28 @@
                         $('#baseResource').find('.dropdown-menu a:eq(1)').click();
                         $('#resTopOrder').val(data.data.topOrder);
                     }
+                }else{
+                    layer.alert(data.message,{icon: 5});
+                }
+            }
+        })
+    }
+
+    function updateRes(){
+        $.ajax({
+            url:"/res/upRes",
+            type:'post',
+            data:$('#baseResource').serialize(),
+            dataType:'json',
+            success:function(data){
+                console.log(data);
+                if(data.code == '00'){
+                    layer.alert('更新成功', {icon: 1},function(index){
+                        queryRes($('#resClassId').val(),function(){
+
+                        });
+                        layer.close(index);
+                    });
                 }else{
                     layer.alert(data.message,{icon: 5});
                 }
